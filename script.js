@@ -115,7 +115,7 @@ const API = {
     const data = await response.json();
     if (!data.contents) throw new Error("HTMLを取得できませんでした");
 
-    return data.contents;
+    return { contents: data.contents, finalUrl: data.finalUrl };
   },
 
   parseHtml(htmlString) {
@@ -214,9 +214,11 @@ const App = {
     UI.showLoading(true);
 
     try {
-      const html = await API.fetchUrl(targetUrl);
-      const doc = API.parseHtml(html);
-      const { title, metaData, ogpList, twitterList } = API.extractData(doc, targetUrl);
+      const { contents, finalUrl } = await API.fetchUrl(targetUrl);
+      const doc = API.parseHtml(contents);
+      // リダイレクト先のURLがあればそれをベースURLとして使う
+      const effectiveUrl = finalUrl || targetUrl;
+      const { title, metaData, ogpList, twitterList } = API.extractData(doc, effectiveUrl);
 
       UI.renderPageTitle(title);
       UI.renderTable(CONFIG.SELECTORS.OGP_TABLE, ogpList);
@@ -224,7 +226,8 @@ const App = {
 
       let host = "WEBSITE";
       try {
-        host = new URL(targetUrl).hostname.toLowerCase();
+        // 最終的なURLのドメインを表示する
+        host = new URL(effectiveUrl).hostname.toLowerCase();
       } catch (e) { /* ignore */ }
 
       UI.renderPreview(metaData, host);

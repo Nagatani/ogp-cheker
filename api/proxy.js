@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   // localhost (開発環境) は許可、それ以外はRefererチェック
   const isLocal = myHost && (myHost.includes('localhost') || myHost.includes('127.0.0.1'));
-  
+
   // Refererが空、または自分のホストを含まない場合は拒否
   if (!isLocal && (!referer || !referer.includes(myHost))) {
     return res.status(403).json({ error: 'Forbidden: External access denied' });
@@ -32,8 +32,8 @@ export default async function handler(req, res) {
 
     const html = await response.text();
 
-    // 結果をJSONで返す (HTML文字列を含む)
-    res.status(200).json({ contents: html });
+    // 結果をJSONで返す (HTML文字列と最終的なURLを含む)
+    res.status(200).json({ contents: html, finalUrl: response.url });
 
   } catch (error) {
     console.error(error);
