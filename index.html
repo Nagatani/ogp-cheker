@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGP & Twitter Card 解析ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="initial">
+
+    <main>
+        <h1>OGP & Twitter Card Analyzer</h1>
+
+        <div class="search-box">
+            <input type="url" id="urlInput" placeholder="https://example.com">
+            <button id="analyzeBtn">解析</button>
+        </div>
+
+        <div id="errorMsg" class="error-msg"></div>
+        <div id="loading" class="loading">解析中...</div>
+
+        <div id="results" class="result-container">
+            <div class="data-panel">
+                <h2>解析データ</h2>
+
+                <h3>基本情報</h3>
+                <table>
+                    <tr>
+                        <th>Page Title</th>
+                        <td id="pageTitle">-</td>
+                    </tr>
+                </table>
+
+                <h3>OGP Data</h3>
+                <table id="ogpTable"></table>
+
+                <h3>Twitter Card Data</h3>
+                <table id="twitterTable"></table>
+            </div>
+
+            <div class="preview-panel">
+                <h2>プレビュー (Card)</h2>
+                <div class="card-preview">
+                    <img id="previewImg" class="card-image" src="" alt="OGP Image">
+                    <div class="card-content">
+                        <div id="previewTitle" class="card-title">Title</div>
+                        <div id="previewDesc" class="card-desc">Description will appear here...</div>
+                        <div id="previewHost" class="card-host">example.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
